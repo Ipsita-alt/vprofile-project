@@ -10,3 +10,6 @@ COPY --from=build_name vprofile-project/target/vprofile-v2.war /usr/local/tomcat
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
+
+##
+
