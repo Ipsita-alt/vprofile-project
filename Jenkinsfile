@@ -34,7 +34,7 @@ pipeline {
                     archiveArtifacts artifacts: '**/*.war'
                 }
             }
-        }
+        
 
         stage('Test'){
             steps {
@@ -68,7 +68,7 @@ pipeline {
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
               }
             }
-        
+}
 
 
 
