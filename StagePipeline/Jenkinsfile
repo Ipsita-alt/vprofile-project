@@ -5,9 +5,6 @@ def COLOR_MAP = [
   "ABORTED": "#A30200"
 ]
 
-
-
-
 pipeline {
     agent any
     tools {
@@ -33,6 +30,8 @@ pipeline {
         registryCredential = 'ecr:us-west-1:awscreds'
         appRegistry = '456069518103.dkr.ecr.us-west-1.amazonaws.com/vprofileappimg'
         vprofileRegistry = 'http://456069518103.dkr.ecr.us-west-1.amazonaws.com'
+        cluster = "vproappstaging"
+        service = "vprofileapptask-service-a8ufbxu5"
 
     }
 
@@ -123,6 +122,14 @@ pipeline {
           }
         }
 
+        stage('deploying to staging ECS'){
+            steps {
+                withAWS(credentialS: 'awscreds', region: 'us-west-1') {
+                    sh 'aws ecs update-service --cluster $(cluster) --service $(service) --force new deployment'
+                }
+            }
+        }
+
 
     }
     post {
@@ -133,6 +140,7 @@ pipeline {
                 message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
+
 }
 
             
